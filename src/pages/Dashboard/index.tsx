@@ -45,7 +45,7 @@ function Dashboard () {
   async function handleUpdateFood (food: foodInputProps) {
     try {
       const response = await api.put<foodProps>(
-        `/foods/${editingFood.id}`,
+        `/foods/${editingFood.editingFood.id}`,
         { ...editingFood, ...food },
       );
 
@@ -82,17 +82,17 @@ function Dashboard () {
 
   return (
     <>
-      <Header openModal={this.toggleModal} />
+      <Header openModal={toggleModal} />
       <ModalAddFood
         isOpen={modalOpen}
-        setIsOpen={this.toggleModal}
-        handleAddFood={this.handleAddFood}
+        setIsOpen={toggleModal}
+        handleAddFood={handleAddFood}
       />
       <ModalEditFood
         isOpen={editModalOpen}
-        setIsOpen={this.toggleEditModal}
+        setIsOpen={toggleEditModal}
         editingFood={editingFood}
-        handleUpdateFood={this.handleUpdateFood}
+        handleUpdateFood={handleUpdateFood}
       />
 
       <FoodsContainer data-testid="foods-list">
@@ -101,8 +101,8 @@ function Dashboard () {
             <Food
               key={food.id}
               food={food}
-              handleDelete={this.handleDeleteFood}
-              handleEditFood={this.handleEditFood}
+              handleDelete={handleDeleteFood}
+              handleEditFood={handleEditFood}
             />
           ))}
       </FoodsContainer>
