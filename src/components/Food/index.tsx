@@ -5,7 +5,7 @@ import { Container } from './styles';
 import api from '../../services/api';
 
 class Food extends Component {
-  constructor(props) {
+  constructor (props) {
     super(props);
 
     const { available } = this.props.food;
@@ -32,7 +32,7 @@ class Food extends Component {
     handleEditFood(food);
   }
 
-  render() {
+  render () {
     const { isAvailable } = this.state;
     const { food, handleDelete } = this.props;
 
