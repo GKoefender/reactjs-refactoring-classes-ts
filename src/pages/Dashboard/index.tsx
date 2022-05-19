@@ -1,24 +1,17 @@
-import { Component, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import Header from '../../components/Header';
 import api from '../../services/api';
 import Food from '../../components/Food';
 import ModalAddFood from '../../components/ModalAddFood';
 import ModalEditFood from '../../components/ModalEditFood';
-import { foodProps } from '../../types'
+import { foodProps, foodInputProps } from '../../types'
 
 import { FoodsContainer } from './styles';
 
-type foodInputProps = Omit<foodProps, 'id' | 'available'>
-
-interface editingFoodProps {
-  editingFood: foodProps,
-  editModalOpen: boolean
-}
-
 function Dashboard () {
   const [foods, setFoods] = useState<foodProps[]>([])
-  const [editingFood, setEditingFood] = useState<editingFoodProps>({} as editingFoodProps)
+  const [editingFood, setEditingFood] = useState<foodProps>({} as foodProps)
   const [modalOpen, setModalOpen] = useState<boolean>(false)
   const [editModalOpen, setEditModalOpen] = useState<boolean>(false)
 
@@ -45,7 +38,7 @@ function Dashboard () {
   async function handleUpdateFood (food: foodInputProps) {
     try {
       const response = await api.put<foodProps>(
-        `/foods/${editingFood.editingFood.id}`,
+        `/foods/${editingFood.id}`,
         { ...editingFood, ...food },
       );
 
@@ -77,7 +70,8 @@ function Dashboard () {
   function toggleEditModal () { setEditModalOpen(!editModalOpen) }
 
   function handleEditFood (food: foodProps) {
-    setEditingFood({ editingFood: food, editModalOpen: true })
+    setEditModalOpen(true)
+    setEditingFood(food)
   }
 
   return (

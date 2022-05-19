@@ -6,3 +6,5 @@ export interface foodProps {
   available: boolean,
   image: string
 }
+
+export type foodInputProps = Omit<foodProps, 'id' | 'available'>

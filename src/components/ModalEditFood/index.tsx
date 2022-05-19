@@ -1,48 +1,46 @@
-import { Component, createRef } from 'react';
+import { useRef } from 'react';
 import { FiCheckSquare } from 'react-icons/fi';
 
 import { Form } from './styles';
 import Modal from '../Modal';
-import Input from '../Input';
+import { Input } from '../Input';
+import { foodInputProps, foodProps } from '../../types'
 
-class ModalEditFood extends Component {
-  constructor(props) {
-    super(props);
+interface modalEditFoodProps {
+  isOpen: boolean
+  setIsOpen: () => void
+  handleUpdateFood: (food: foodInputProps) => Promise<void>
+  editingFood: foodProps
+}
 
-    this.formRef = createRef()
-  }
+function ModalEditFood ({ editingFood, setIsOpen, isOpen, handleUpdateFood }: modalEditFoodProps) {
+  const formRef = useRef(null)
 
-  handleSubmit = async (data) => {
-    const { setIsOpen, handleUpdateFood } = this.props;
-
-    handleUpdateFood(data);
+  async function handleSubmit (newFood: foodInputProps) {
+    handleUpdateFood(newFood);
     setIsOpen();
   };
 
-  render() {
-    const { isOpen, setIsOpen, editingFood } = this.props;
+  return (
+    <Modal isOpen={isOpen} setIsOpen={setIsOpen}>
+      <Form ref={formRef} onSubmit={handleSubmit} initialData={editingFood}>
+        <h1>Editar Prato</h1>
+        <Input name="image" placeholder="Cole o link aqui" />
 
-    return (
-      <Modal isOpen={isOpen} setIsOpen={setIsOpen}>
-        <Form ref={this.formRef} onSubmit={this.handleSubmit} initialData={editingFood}>
-          <h1>Editar Prato</h1>
-          <Input name="image" placeholder="Cole o link aqui" />
+        <Input name="name" placeholder="Ex: Moda Italiana" />
+        <Input name="price" placeholder="Ex: 19.90" />
 
-          <Input name="name" placeholder="Ex: Moda Italiana" />
-          <Input name="price" placeholder="Ex: 19.90" />
+        <Input name="description" placeholder="Descrição" />
 
-          <Input name="description" placeholder="Descrição" />
-
-          <button type="submit" data-testid="edit-food-button">
-            <div className="text">Editar Prato</div>
-            <div className="icon">
-              <FiCheckSquare size={24} />
-            </div>
-          </button>
-        </Form>
-      </Modal>
-    );
-  }
-};
+        <button type="submit" data-testid="edit-food-button">
+          <div className="text">Editar Prato</div>
+          <div className="icon">
+            <FiCheckSquare size={24} />
+          </div>
+        </button>
+      </Form>
+    </Modal>
+  )
+}
 
 export default ModalEditFood;
